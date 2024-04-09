@@ -7,7 +7,10 @@ O novo histograma disponibiliza as informações de "code", "method" e "endpoint
 O objetivo dessas métricas é ajudar a visualizar quais requisições estão sendo mais utilizadas e os seus retornos.
 
 Para utilizar tal biblioteca é necessário:
-* Importar a biblioteca para o seu projeto.
+* Importar a biblioteca para o seu projeto:
+``` golang
+github.com/meganewsopensource/metricsmega
+```
 * Na sua implementação do gin, adicione o middleware com a função Use()
 
 ``` golang
