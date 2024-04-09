@@ -1,0 +1,6 @@
+profile: cover.out
+
+githubActionOutput: true
+
+threshold:
+  total: 50
