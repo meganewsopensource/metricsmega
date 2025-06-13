@@ -25,7 +25,7 @@ func Test_middleware_Metrics(t *testing.T) {
 	}{
 		{
 			name:           "Success",
-			exceptedString: "http_request_duration_seconds_bucket{code=\"200\",endpoint=\"/test\",method=\"GET\",le=\"0.1\"} 1",
+			exceptedString: "http_request_duration_seconds_bucket{code=\"200\",endpoint=\"/test\",method=\"GET\",le=\"0.001\"} 1",
 			wantErr:        false,
 		},
 		{
