@@ -2,6 +2,7 @@ package monitoring
 
 import (
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,18 +13,24 @@ type middleware struct {
 	duration *prometheus.HistogramVec
 }
 
+var (
+	httpDuration *prometheus.HistogramVec
+	once         sync.Once
+)
+
 func Config() middleware {
+	once.Do(func() {
+		httpDuration = prometheus.NewHistogramVec(prometheus.HistogramOpts{
+			Name:    "http_request_duration_seconds",
+			Help:    "Time taken to process HTTP requests",
+			Buckets: []float64{0.001, 0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384, 32.768},
+		}, []string{"code", "method", "endpoint"})
 
-	vec := prometheus.NewHistogramVec(prometheus.HistogramOpts{
-		Name:    "http_request_duration_seconds",
-		Help:    "Time taken to process HTTP requests",
-		Buckets: []float64{0.001, 0.002, 0.004, 0.008, 0.016, 0.032, 0.064, 0.128, 0.256, 0.512, 1.024, 2.048, 4.096, 8.192, 16.384, 32.768},
-	}, []string{"code", "method", "endpoint"})
-
-	prometheus.MustRegister(vec)
+		prometheus.MustRegister(httpDuration)
+	})
 
 	return middleware{
-		duration: vec,
+		duration: httpDuration,
 	}
 
 }

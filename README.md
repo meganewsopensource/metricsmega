@@ -23,3 +23,21 @@ Ao consultar o seu endpoint de metrics, deverá ser possivel encontrar mais uma 
 ``
 "http_request_duration_seconds_bucket{code="200",endpoint="test",method="GET",le="0.1"} 1"
 ``
+
+## gRPC
+
+Para utilizar o middleware gRPC:
+
+* Na sua implementação do gRPC server, adicione o interceptor:
+
+``` golang
+s := grpc.NewServer(
+    grpc.UnaryInterceptor(monitoring.GrpcConfig().UnaryServerInterceptor()),
+)
+```
+
+As métricas serão exportadas como:
+
+``
+"grpc_request_duration_seconds_bucket{code="0",endpoint="/package.Service/Method",method="unary",le="0.1"} 1"
+``
